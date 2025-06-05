@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "tmf645-example.fullname" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "tmf645-example.fullname" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "tmf645-example.fullname" . }}
+    spec:
+      containers:
+        - name: api
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          ports:
+            - containerPort: 3000
+          env:
+            - name: RELEASE_PREFIX
+              value: "{{ .Values.env.RELEASE_PREFIX }}"

@@ -1,0 +1,19 @@
+openapi: 3.0.1
+info:
+  title: TMF645 Service Qualification API
+  version: 0.2.0
+paths:
+  /serviceQualification:
+    post: {summary: Create, responses: {201: {description: Created}}}
+    get:  {summary: List,   responses: {200: {description: OK}}}
+  /serviceQualification/{id}:
+    get:    {summary: Retrieve, responses: {200: {description: OK}}}
+    patch:  {summary: Update,   responses: {200: {description: OK}}}
+    delete: {summary: Delete,   responses: {204: {description: No Content}}}
+  /hub:
+    post: {summary: Subscribe, responses: {201: {description: Created}}}
+    get:  {summary: List subs, responses: {200: {description: OK}}}
+  /hub/{id}:
+    delete: {summary: Unsubscribe, responses: {204: {description: No Content}}}
+  /health:
+    get: {summary: Health, responses: {200: {description: OK}}}

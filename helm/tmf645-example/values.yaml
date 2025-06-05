@@ -1,0 +1,9 @@
+image:
+  repository: tmf645-example
+  tag: "0.6.0"
+replicaCount: 1
+env:
+  RELEASE_PREFIX: r22-servicequalification
+service:
+  type: ClusterIP
+  port: 80

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "tmf645-example.fullname" . }}
+spec:
+  type: {{ .Values.service.type }}
+  selector:
+    app: {{ include "tmf645-example.fullname" . }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: 3000
