@@ -1,9 +1,13 @@
+component:
+  id: TMFC645
+  name: servicequalification
+  functionalBlock: ServiceManagement
+  publicationDate: 2025-06-05T00:00:00.000Z
+  version: "0.0.1"
 image:
-  repository: tmf645-example
-  tag: "0.6.0"
+  repository: ravijangra92/reference-example
+  tag: "tmf645-1.0.0"
 replicaCount: 1
-env:
-  RELEASE_PREFIX: r22-servicequalification
 service:
-  type: ClusterIP
+  type: NodePort
   port: 80

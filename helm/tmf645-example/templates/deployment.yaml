@@ -1,22 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "tmf645-example.fullname" . }}
+  name: {{.Release.Name}}-servicequalification
+  labels:
+    oda.tmforum.org/componentName: {{.Release.Name}}-{{.Values.component.name}}
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: 1
   selector:
     matchLabels:
-      app: {{ include "tmf645-example.fullname" . }}
+      impl: {{.Release.Name}}-servicequalification
   template:
     metadata:
       labels:
-        app: {{ include "tmf645-example.fullname" . }}
+        app: {{.Release.Name}}-{{.Values.component.name}}
+        impl: {{.Release.Name}}-servicequalification
+        version: {{.Values.api.versionLabel}}
     spec:
       containers:
-        - name: api
+        - name: {{.Release.Name}}-servicequalification
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           ports:
             - containerPort: 3000
           env:
-            - name: RELEASE_PREFIX
-              value: "{{ .Values.env.RELEASE_PREFIX }}"
+            - name: RELEASE_NAME
+              value: "{{.Release.Name}}-servicequalification"
+        imagePullPolicy: Always

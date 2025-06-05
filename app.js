@@ -96,10 +96,10 @@ const YAML      = require('yamljs');
 const spec = YAML.load('./api/tmf645-openapi.yaml');
 
 // Allow multiple Helm releases to coexist
-const RELEASE_PREFIX = process.env.RELEASE_PREFIX || '';  
-const BASE_PATH   = `/${RELEASE_PREFIX ? RELEASE_PREFIX + '/' : ''}tmf-api/serviceQualification/v4`;
+const RELEASE_NAME = process.env.RELEASE_NAME || '';  
+const BASE_PATH   = `/${RELEASE_NAME ? RELEASE_NAME + '/' : ''}tmf-api/serviceQualification/v4`;
 const UI_PATH     = `${BASE_PATH}/ui`; 
-const METRICS_PATH= `/${RELEASE_PREFIX ? RELEASE_PREFIX + '/' : ''}metrics`;
+const METRICS_PATH= `/${RELEASE_NAME ? RELEASE_NAME + '/' : ''}metrics`;
 
 
 // ---- Swagger UI ---- //
