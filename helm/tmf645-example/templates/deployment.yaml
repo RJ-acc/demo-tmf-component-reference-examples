@@ -1,27 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{.Release.Name}}-servicequalification
+  name: {{.Release.Name}}-{{ .Values.component.name }}
   labels:
     oda.tmforum.org/componentName: {{.Release.Name}}-{{.Values.component.name}}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      impl: {{.Release.Name}}-servicequalification
+      impl: {{.Release.Name}}-{{ .Values.component.name }}
   template:
     metadata:
       labels:
         app: {{.Release.Name}}-{{.Values.component.name}}
-        impl: {{.Release.Name}}-servicequalification
+        impl: {{.Release.Name}}-{{ .Values.component.name }}
         version: {{.Values.api.versionLabel}}
     spec:
       containers:
-        - name: {{.Release.Name}}-servicequalification
+        - name: {{.Release.Name}}-{{ .Values.component.name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
           env:
             - name: RELEASE_PREFIX
-              value: "{{.Release.Name}}-servicequalification"
+              value: "{{.Release.Name}}-{{ .Values.component.name }}"

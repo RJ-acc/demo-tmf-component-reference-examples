@@ -5,7 +5,6 @@ component:
   publicationDate: 2025-06-05T00:00:00.000Z
   version: "0.0.1"
   description: "TMF-645 Service Qualification reference component."
-  # gateway policy
   apipolicy:
     apiKeyVerification:
       enabled: false
