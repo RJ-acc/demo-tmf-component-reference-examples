@@ -19,9 +19,9 @@ spec:
       containers:
         - name: {{.Release.Name}}-servicequalification
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: Always
           ports:
             - containerPort: 3000
           env:
             - name: RELEASE_NAME
               value: "{{.Release.Name}}-servicequalification"
-        imagePullPolicy: Always
