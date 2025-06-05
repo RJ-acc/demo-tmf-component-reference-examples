@@ -25,7 +25,7 @@ spec:
       - name: servicequalification
         specification:
           - url: "https://raw.githubusercontent.com/tmforum-apis/TMF645_ServiceQualification/master/TMF645-ServiceQualification-v4.0.0.swagger.json"
-        implementation: {{ .Release.Name }}-{{ .Values.component.name }}-api
+        implementation: {{.Release.Name}}-servicequalification
         apiType: openapi
         gatewayConfiguration:
           apiKeyVerification: {{ .Values.component.apipolicy.apiKeyVerification | toYaml | nindent 12 }}
@@ -49,10 +49,11 @@ spec:
           OASValidation:      {{ .Values.component.apipolicy.OASValidation      | toYaml | nindent 12 }}
           CORS:               {{ .Values.component.apipolicy.CORS               | toYaml | nindent 12 }}
           template: "{{ .Values.component.apipolicy.template }}"
-        implementation: {{ .Release.Name }}-{{ .Values.component.name }}-sm
+        implementation: {{.Release.Name}}-servicequalification
         path: /{{ .Release.Name }}-{{ .Values.component.name }}/metrics
         port: 3000     
   securityFunction:
+    canvasSystemRole: {{ .Values.security.canvasSystemRole }}
     exposedAPIs: []
   eventNotification:
     publishedEvents: []

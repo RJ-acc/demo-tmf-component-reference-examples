@@ -37,7 +37,5 @@ service:
   type: NodePort
   port: 80
 
-
-
 security:
-  canvasSystemRole: Default
+  canvasSystemRole: Admin
