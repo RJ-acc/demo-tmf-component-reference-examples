@@ -23,5 +23,5 @@ spec:
           ports:
             - containerPort: 3000
           env:
-            - name: RELEASE_NAME
+            - name: RELEASE_PREFIX
               value: "{{.Release.Name}}-servicequalification"

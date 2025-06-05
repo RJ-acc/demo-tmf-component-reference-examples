@@ -1,0 +1,59 @@
+apiVersion: oda.tmforum.org/v1
+kind: Component
+metadata:
+  name: {{ .Release.Name }}-{{ .Values.component.name }}
+  labels:
+    oda.tmforum.org/componentName: {{ .Release.Name }}-{{ .Values.component.name }}
+spec:
+  componentMetadata:
+    id: {{ .Values.component.id }}                 # TMF645
+    name: {{ .Values.component.name }}             # servicequalification
+    functionalBlock: {{ .Values.component.functionalBlock }}
+    publicationDate: {{ .Values.component.publicationDate }}
+    status: specified
+    version: {{ .Values.component.version }}
+    description: "{{ .Values.component.description }}"
+    maintainers:
+      - name: {{ .Values.component.maintainer.name }}
+        email: {{ .Values.component.maintainer.email }}
+    owners:
+      - name: {{ .Values.component.owner.name }}
+        email: {{ .Values.component.owner.email }}
+
+  coreFunction:
+    exposedAPIs:
+      - name: servicequalification
+        specification:
+          - url: "https://raw.githubusercontent.com/tmforum-apis/TMF645_ServiceQualification/master/TMF645-ServiceQualification-v4.0.0.swagger.json"
+        implementation: {{ .Release.Name }}-{{ .Values.component.name }}-api
+        apiType: openapi
+        gatewayConfiguration:
+          apiKeyVerification: {{ .Values.component.apipolicy.apiKeyVerification | toYaml | nindent 12 }}
+          rateLimit:          {{ .Values.component.apipolicy.rateLimit          | toYaml | nindent 12 }}
+          quota:              {{ .Values.component.apipolicy.quota              | toYaml | nindent 12 }}
+          OASValidation:      {{ .Values.component.apipolicy.OASValidation      | toYaml | nindent 12 }}
+          CORS:               {{ .Values.component.apipolicy.CORS               | toYaml | nindent 12 }}
+          template: "{{ .Values.component.apipolicy.template }}"
+        path: /{{ .Release.Name }}-{{ .Values.component.name }}/tmf-api/serviceQualification/v4
+        developerUI: /{{ .Release.Name }}-{{ .Values.component.name }}/tmf-api/serviceQualification/v4/ui
+        port: 3000
+
+  managementFunction:
+    exposedAPIs:
+      - name: metrics
+        apiType: prometheus
+        gatewayConfiguration:
+          apiKeyVerification: {{ .Values.component.apipolicy.apiKeyVerification | toYaml | nindent 12 }}
+          rateLimit:          {{ .Values.component.apipolicy.rateLimit          | toYaml | nindent 12 }}
+          quota:              {{ .Values.component.apipolicy.quota              | toYaml | nindent 12 }}
+          OASValidation:      {{ .Values.component.apipolicy.OASValidation      | toYaml | nindent 12 }}
+          CORS:               {{ .Values.component.apipolicy.CORS               | toYaml | nindent 12 }}
+          template: "{{ .Values.component.apipolicy.template }}"
+        implementation: {{ .Release.Name }}-{{ .Values.component.name }}-sm
+        path: /{{ .Release.Name }}-{{ .Values.component.name }}/metrics
+        port: 3000     
+  securityFunction:
+    exposedAPIs: []
+  eventNotification:
+    publishedEvents: []
+    subscribedEvents: []

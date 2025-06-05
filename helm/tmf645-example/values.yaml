@@ -4,12 +4,40 @@ component:
   functionalBlock: ServiceManagement
   publicationDate: 2025-06-05T00:00:00.000Z
   version: "0.0.1"
+  description: "TMF-645 Service Qualification reference component."
+  # gateway policy
+  apipolicy:
+    apiKeyVerification:
+      enabled: false
+    rateLimit:
+      enabled: false
+    quota:
+      identifier: ""
+      limit: ""
+    OASValidation:
+      requestEnabled: false
+      responseEnabled: false
+    CORS:
+      enabled: false
+    template: ""
+  maintainer:
+    name: Ravi Jangra 
+    email: ravi.e.ravi@accenture.com
+  owner:
+    name: Ravi Jangra 
+    email: ravi.e.ravi@accenture.com
+
 api:
   versionLabel: servicemanagementapi-0.1
 image:
   repository: ravijangra92/reference-example
-  tag: "tmf645-1.0.0"
+  tag: "tmf645-1.0.2"
 replicaCount: 1
 service:
   type: NodePort
   port: 80
+
+
+
+security:
+  canvasSystemRole: Default
