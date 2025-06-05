@@ -4,6 +4,8 @@ component:
   functionalBlock: ServiceManagement
   publicationDate: 2025-06-05T00:00:00.000Z
   version: "0.0.1"
+api:
+  versionLabel: servicemanagementapi-0.1
 image:
   repository: ravijangra92/reference-example
   tag: "tmf645-1.0.0"
