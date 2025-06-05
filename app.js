@@ -1,7 +1,4 @@
-/**************************************************************************
- *  TMF-645 Service Qualification – reference implementation
- *  Prefix-aware (RELEASE_PREFIX) for TM Forum ODA Canvas deployments
- **************************************************************************/
+//TMF-645 Service Qualification – reference implementation//
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -13,30 +10,27 @@ const YAML = require('yamljs');
 const prom = require('prom-client');
 
 const PORT = process.env.PORT || 3000;
-const RELEASE_PREFIX = process.env.RELEASE_PREFIX || '';   // e.g. tmf645-example-servicequalification
+const RELEASE_PREFIX = process.env.RELEASE_PREFIX || '';
 const BASE_PATH  = `/${RELEASE_PREFIX ? RELEASE_PREFIX + '/' : ''}tmf-api/serviceQualification/v4`;
 const UI_PATH    = `${BASE_PATH}/ui`;
 const METRICS    = `/${RELEASE_PREFIX ? RELEASE_PREFIX + '/' : ''}metrics`;
-const SAMPLE_GUI = `/${RELEASE_PREFIX ? RELEASE_PREFIX + '/' : ''}sample-ui`;
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.json({ limit: '2mb' }));
 app.use(morgan('common'));
 
-/* ───────────────────────────────────  In-memory stores  ───────────────── */
+//In-memory stores//
 const qualifications = new Map();
 const subscriptions  = new Map();
 
-/* ─────────────────────────────────────  Health  ───────────────────────── */
+// Health//
 app.get('/health', (_req, res) => res.json({ status: 'ok' }));
 
-/**************************************************************************
- *                    Business API – mounted under BASE_PATH
- **************************************************************************/
+// Business API – mounted under BASE_PATH//
 const api = express.Router();
 
-/* ---------- ServiceQualification collection ---------- */
+//ServiceQualification collection//
 api.post('/serviceQualification', (req, res) => {
   const id  = uuid();
   const now = new Date().toISOString();
@@ -78,7 +72,7 @@ api.delete('/serviceQualification/:id', (req, res) => {
   res.status(204).end();
 });
 
-/* --------------------------- Hub --------------------------- */
+// Hub //
 api.post('/hub', (req, res) => {
   if (!req.body.callback) return res.status(400).json({ error: 'callback URL required' });
   const id = uuid();
@@ -101,19 +95,17 @@ api.delete('/hub/:id', (req, res) => {
   res.status(204).end();
 });
 
-/* ---------- Mount the router ---------- */
+//Mount the router//
 app.use(BASE_PATH, api);
 
-/**************************************************************************
- *                             Docs & GUI
- **************************************************************************/
-/* Swagger UI */
+//Docs //
+//Swagger UI//
 const spec = YAML.load('./api/tmf645-openapi.yaml');
 app.use(UI_PATH, swaggerUi.serve, swaggerUi.setup(spec, {
   customCss: '.swagger-ui .topbar{display:none}'
 }));
 
-/* Root “catalog” document */
+// Root “catalog” document//
 app.get(BASE_PATH, (_req, res) => {
   res.json({
     _links: {
@@ -133,12 +125,7 @@ app.get(BASE_PATH, (_req, res) => {
   });
 });
 
-/* Sample GUI (optional) */
-app.use(SAMPLE_GUI, express.static('public-sample'));
-
-/**************************************************************************
- *                          Prometheus metrics
- **************************************************************************/
+//Prometheus metrics//
 prom.collectDefaultMetrics();
 const reqCounter = new prom.Counter({
   name: 'http_requests_total',
@@ -158,13 +145,10 @@ app.get(METRICS, async (_req, res) => {
   res.end(await prom.register.metrics());
 });
 
-/**************************************************************************
- *                              Startup
- **************************************************************************/
+//Startup//
 app.listen(PORT, () => {
   console.log(`TMF-645 API listening on :${PORT}`);
   console.log(`Swagger UI   → ${UI_PATH}`);
   console.log(`Catalog      → ${BASE_PATH}`);
   console.log(`Metrics      → ${METRICS}`);
-  console.log(`Sample GUI   → ${SAMPLE_GUI}`);
 });
